@@ -21,8 +21,6 @@ test('check responsiveness and check if the svg is drawn', async ({page}, testIn
 
   // check div with id pie-chart has svg element inside of it
   const pieChart = await page.$('#pie-chart');
-  console.log('pieChart', pieChart);
-  expect(pieChart).not.toBeNull();
   const pieChartSVG = await pieChart?.$('svg');
   expect(pieChartSVG).not.toBeNull();
 
