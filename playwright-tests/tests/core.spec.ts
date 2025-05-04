@@ -1,22 +1,28 @@
 
 import {test, expect} from '@playwright/test';
 
-test('has title', async ({page}, testInfo) => {
+test('check responsiveness and check if the svg is drawn', async ({page}, testInfo) => {
   await page.goto('http://localhost:3000/');
   const screenshot = await page.screenshot();
+  //default window
   await testInfo.attach('screenshot', {
     body: screenshot,
     contentType: 'image/png',
   });
 
+  //mobile window
+  await page.setViewportSize({width: 375, height: 667});
+  await page.goto('http://localhost:3000/');
+  const mobileScreenshot = await page.screenshot();
+  await testInfo.attach('mobileScreenshot', {
+    body: mobileScreenshot,
+    contentType: 'image/png',
+  });
 
-  expect('hi').toBe('bye');
+  // check div with id pie-chart has svg element inside of it
+  const pieChart = await page.$('#pie-chart');
+  const pieChartSVG = await pieChart?.$('svg');
+  expect(pieChartSVG).not.toBeNull();
 
-
-
-
-
-  console.log(`Go to http://0.0.0.0:9323/#?testId=${testInfo.testId} to see the test result of this test.`);
-  console.log('Or just click the test name at http://0.0.0.0:9323/ to see the test result of this test.');
 });
 
