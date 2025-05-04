@@ -1,6 +1,13 @@
-FROM node:22.14.0-alpine3.21@sha256:9bef0ef1e268f60627da9ba7d7605e8831d5b56ad07487d24d1aa386336d1944
+FROM mcr.microsoft.com/playwright
 WORKDIR /app
 COPY package.json package-lock.json .
-RUN npm install
-COPY . .
+COPY ./ ./
+RUN cd ./nest-workspace && npm i
+RUN cd ./playwright-tests/ && npm i && npx playwright install chromium;
+
+# nestjs process http://localhost:3000
+EXPOSE 3000
+# plawright test report http://localhost:9323
+EXPOSE 9323
+
 CMD ["sh"]
